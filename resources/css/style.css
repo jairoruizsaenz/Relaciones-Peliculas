@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+html {
+    background-color: #efefef;
+    color: #555;
+    font-family: 'Lato', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    text-rendering: optimizeLegibility;
+}
+
+*::selection {
+    background: rgb(204, 224, 255); /* WebKit/Blink Browsers */
+}
+
+*::-moz-selection {
+    background: rgb(204, 224, 255); /* Gecko Browsers */  
+}
+
+/*
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)), url(img/hero.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+*/
+
+/*
+.hero-text-box {
+    position: absolute;
+    width: 1140px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}*/
+
+.container {
+    width: 1140px;
+    
+    /*margin: Top Right Button Left;  */   
+    margin: 20px  auto 0 auto; 
+}
+
+.main-text,p{
+    text-align: justify;
+}
+
+.axis{
+    font-size: 12px;
+    font-family:sans-serif;
+}
+
+.axis_label{
+    fill:#555;
+    font-size:18px;    
+    font-family:sans-serif;
+}
+
+.descripcion_grafica{
+    font-size:12px;
+    font-family:sans-serif;
+}
+
+.convenciones{
+    fill:#555;
+    font-size:12px;    
+    font-family:sans-serif;
+}
+
+.Titulo_grafica{
+    fill:#555;
+    font-size:24px;    
+    font-family:sans-serif; 
+    font-weight: bold;
+}
+
+.elemento:hover {
+    fill: rgb(245, 39, 39);    
+}
+
+.toolTip {
+    pointer-events: none;
+    position: absolute;
+    min-width: 50px;
+    height: auto;
+    background: none repeat scroll 0 0 rgb(229, 229, 229);    
+    padding: 9px 14px 6px 14px;
+    border-radius: 15px;
+    text-align: left;  
+    box-shadow: 0px 12px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dot {
+  stroke: #000;
+}
+
+.grafica{
+    /* background-color: rgba(31, 111, 65, 0.42); 
+    border: 1px solid red;
+    */
+}
+
+#wrapper {
+    width: 1140px;
+    border: 1px solid black;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#first {
+    width: 800px;
+    float:left; /* add this */
+    border: 1px solid red;
+}
+#second {
+    border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+#third {
+    border: 1px solid blue;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+
+/*
+
+h1,h2{background-color: #ff8484}
+p{background-color: aqua}
+.grafica{background-color: rgba(31, 111, 65, 0.42)}
+
+*/
