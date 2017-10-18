@@ -41,7 +41,7 @@ header {
 }*/
 
 .container {
-    width: 1140px;
+    width: 1320px;
     
     /*margin: Top Right Button Left;  */   
     margin: 20px  auto 0 auto; 
@@ -104,15 +104,16 @@ header {
     /* background-color: rgba(31, 111, 65, 0.42); 
     border: 1px solid red;
     */
+    border: 1px solid green;
 }
 
 #wrapper {
-    width: 1140px;
+    width: 1320px;
     border: 1px solid black;
     overflow: hidden; /* will contain if #first is longer than #second */
 }
 #first {
-    width: 800px;
+    width: 900px;
     float:left; /* add this */
     border: 1px solid red;
 }

@@ -5,15 +5,15 @@ var canvas = d3.select("#network"),
   ctx = canvas.node().getContext("2d"),
   r = 3,
   color = d3.scaleOrdinal(d3.schemeCategory20),
-
+  
   simulation = d3.forceSimulation()
     .force("x", d3.forceX(width/2))
     .force("y", d3.forceY(height/2))
     .force("collide", d3.forceCollide(r+1))
-    .force("charge", d3.forceManyBody().strength(-100))
+    .force("charge", d3.forceManyBody().strength(-80))
     .force("link", d3.forceLink().id(function (d) { return d.Nombre; }));
 
-d3.json("resources/data/data.json", function (err, graph) {
+d3.json("resources/data/data1.json", function (err, graph) {
   if (err) throw err;
 
     simulation.nodes(graph.nodes);
@@ -32,8 +32,9 @@ d3.json("resources/data/data.json", function (err, graph) {
     function update() {
     ctx.clearRect(0, 0, width, height);
     ctx.beginPath();
-    ctx.globalAlpha = 0.9;
-    ctx.strokeStyle = "#aaa";
+    ctx.globalAlpha = 0.4;
+    ctx.strokeStyle = "#9886ff";  
+    ctx.lineWidth=1;
     graph.links.forEach(drawLink);
     ctx.stroke();
     ctx.globalAlpha = 1.0;
@@ -47,7 +48,7 @@ d3.json("resources/data/data.json", function (err, graph) {
 });
 
 function dragstarted() {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  if (!d3.event.active) simulation.alphaTarget(0.5).restart();
   d3.event.subject.fx = d3.event.subject.x;
   d3.event.subject.fy = d3.event.subject.y;
   console.log(d3.event.subject);
