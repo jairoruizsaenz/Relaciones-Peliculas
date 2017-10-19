@@ -5,20 +5,50 @@ var canvas = d3.select("#network"),
   ctx = canvas.node().getContext("2d"),
   r = 3,
   color = d3.scaleOrdinal(d3.schemeCategory20),
-  
+  widthScale = d3.scaleLinear().range([0,width]),
+        
   simulation = d3.forceSimulation()
-    .force("x", d3.forceX(width/2))
+    //.force("x", d3.forceX(width/2))
+    
+    .force('x', d3.forceX().x(function (d) {
+                
+        if (d.Grupo == "Pelicula") {
+            //console.log("d.Grupo :", d.Grupo);
+            //console.log("widthScale", widthScale(d.Fecha));
+            return widthScale(d.Fecha);
+        } else {            
+            return (width / 2);
+        }
+    }))
+
+
+
     .force("y", d3.forceY(height/2))
     .force("collide", d3.forceCollide(r+1))
-    .force("charge", d3.forceManyBody().strength(-80))
+    .force("charge", d3.forceManyBody().strength(function (d) {
+        
+        if (d.Grupo == "Pelicula") {
+            //console.log("d.Grupo :", d.Grupo);
+            //console.log("widthScale", widthScale(d.Fecha));
+            return -100;
+        } else {            
+            return 0;
+        }
+    
+    }))
     .force("link", d3.forceLink().id(function (d) { return d.Nombre; }));
 
-d3.json("resources/data/data1.json", function (err, graph) {
+d3.json("resources/data/data2.json", function (err, graph) {
   if (err) throw err;
 
+    //widthScale.domain([0, d3.max(graph, function(d) { return (d.Fecha); })]);    
+    //console.log(widthScale(2015));
+    
+    widthScale.domain([2000,2020]);
+    
     simulation.nodes(graph.nodes);
     simulation.force("link").links(graph.links);
-
+    
     simulation.on("tick", update);
 
     canvas
@@ -45,7 +75,11 @@ d3.json("resources/data/data1.json", function (err, graph) {
     return simulation.find(d3.event.x, d3.event.y);
   }
 
-});
+}
+       
+
+        
+);
 
 function dragstarted() {
   if (!d3.event.active) simulation.alphaTarget(0.5).restart();
