@@ -13,7 +13,7 @@ var highlight_stroke_width = 3,
     svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = {top: 50, right: 20, bottom: 30, left: 20};
+    margin = {top: 50, right: 50, bottom: 50, left: 50};
     
     svg
         .append("svg")
@@ -22,61 +22,32 @@ var highlight_stroke_width = 3,
 
 var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"),        
     r = 4,
-    color = d3.scaleOrdinal(d3.schemeCategory20),
-    widthScale = d3.scaleLinear().range([0,width- margin.left -margin.right]),    
-    heightScale = d3.scaleLinear().range([0,height- margin.top -margin.bottom]);
-
-var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.Nombre; }).distance(3))
-    .force("collide", d3.forceCollide(r+3))
-    .force("charge", d3.forceManyBody().strength(-20))    
-
-    .force('x', d3.forceX()
-       .x(function (d) {                
-        if (d.Grupo == "Pelicula") {
-            return widthScale(d.Fecha);
-        } else {            
-            return (width);
-        }
-    }).strength(function (d) {                
-        if (d.Grupo == "Pelicula") {            
-            return 2;
-        } else {            
-            return 0;
-        }
-    }))
+    color = "rgb(255, 127, 14)";
     
-    .force('y', d3.forceY()
-       .y(function (d,i) {                
-        if (d.Grupo == "Pelicula") {
-            return heightScale(i);
-        } else {            
-            return (height);
-        }
-    }).strength(function (d) {
-                
-        if (d.Grupo == "Pelicula") {
-            return 2;
-        } else {            
-            return 0;
-        }
-    }));
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.Nombre; }))//.distance(100))
+    .force("collide", d3.forceCollide(r+3))
+    .force("charge", d3.forceManyBody().strength(-50))
+    .force('x', d3.forceX().x((width - margin.left - margin.right)/2).strength(1))
+    .force('y', d3.forceY().y((height - margin.top - margin.bottom)/2).strength(1));
+    
 
-d3.json("resources/data/data.json", function(error, graph) {
+d3.json("resources/data/data2.json", function(error, graph) {
   if (error) throw error;
   
   //console.log("Min:",d3.min(graph.nodes, function(d) { return d.Fecha; }));
   //console.log("Max:",d3.max(graph.nodes, function(d) { return d.Fecha; }));
   
-  //heightScale.domain(graph.nodes.map(function(d) { return d.Nombre; }));
-  //widthScale.domain([
-  //        d3.min(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }}),
-  //        d3.max(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }})
-  //    ]).nice();
-      
-  widthScale.domain([2000,2017]).nice();
-  heightScale.domain([0,30]).nice();
-
+    //heightScale.domain(graph.nodes.map(function(d) { return d.Nombre; }));
+  /*
+    widthScale.domain([
+          d3.min(graph.nodes, function(d) { return d.N_Peliculas; }),
+          d3.max(graph.nodes, function(d) { return d.N_Peliculas; })
+      ]).nice();
+  
+  widthScale.domain([0,12]).nice();
+  heightScale.domain([170,0]).nice();
+*/
   var link = g.append("g")
         .attr("class", "links")
     .selectAll("line")
@@ -102,7 +73,7 @@ d3.json("resources/data/data.json", function(error, graph) {
         })
       .attr("stroke","white")  
       .attr("stroke-width",0.5)
-      .attr("fill", function(d) { return color(d.Grupo); })
+      .attr("fill", color)
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
@@ -153,17 +124,6 @@ d3.json("resources/data/data.json", function(error, graph) {
         .attr("transform", function(d) { return "translate(" + (d.x + 10) + "," + d.y + ")"; });
   }
 
-g.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (height*0.87) + ")")  
-    .style("font-size", default_text_size)
-    .call(d3.axisBottom(widthScale).ticks(null, "0"))
-.append("text")
-    .attr("class", "axis_label")
-    .attr("transform", "translate(" + (0) + "," + 45 + ")")
-    .text("Año de Lanzamiento")        
-    .attr("text-anchor","start");
-   
 //::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::::::
@@ -274,7 +234,7 @@ function exit_highlight()
 //::::::::::::::::::::::::::::::::
 
 function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  if (!d3.event.active) simulation.alphaTarget(0.0).restart();
   d.fx = d.x;
   d.fy = d.y;  
     
