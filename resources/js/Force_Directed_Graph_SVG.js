@@ -1,8 +1,20 @@
 /* global d3 */
+
+var highlight_stroke_width = 3;
+var highlight_color = "#fd0000";
+var highlight_trans = 0.1;
+var highlight_stroke_opacity = 0.7
+var highlight_text_size = "17px";
+
+var default_stroke_width = 1;
+var default_stroke_color = "#777777";
+var default_stroke_opacity = 0.5;
+var default_text_size = "15px";
+
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = {top: 50, right: 50, bottom: 30, left: 50};
+    margin = {top: 50, right: 20, bottom: 30, left: 20};
     
     svg
         .append("svg")
@@ -12,30 +24,23 @@ var svg = d3.select("svg"),
 var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"),        
     r = 4,
     color = d3.scaleOrdinal(d3.schemeCategory20),
-    widthScale = d3.scaleLinear().range([0,width- margin.left -margin.right]),
-    //heightScale = d3.scaleBand().range([0,height]);
+    widthScale = d3.scaleLinear().range([0,width- margin.left -margin.right]),    
     heightScale = d3.scaleLinear().range([0,height- margin.top -margin.bottom]);
 
 var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.Nombre; }).distance(2))
+    .force("link", d3.forceLink().id(function(d) { return d.Nombre; }).distance(3))
     .force("collide", d3.forceCollide(r+3))
-    .force("charge", d3.forceManyBody()
-           .strength(-20)
-           )
+    .force("charge", d3.forceManyBody().strength(-20))
     //.force("center", d3.forceCenter(width / 2, height / 2))
     .force('x', d3.forceX()
        .x(function (d) {                
         if (d.Grupo == "Pelicula") {
-            //console.log("d.Grupo :", d.Grupo);
-            //console.log("widthScale", widthScale(d.Fecha));
             return widthScale(d.Fecha);
         } else {            
             return (width);
         }
-    }).strength(function (d) {
-                
-        if (d.Grupo == "Pelicula") {
-            //console.log("getXForce :", getXForce(d));
+    }).strength(function (d) {                
+        if (d.Grupo == "Pelicula") {            
             return 2;
         } else {            
             return 0;
@@ -46,8 +51,6 @@ var simulation = d3.forceSimulation()
     .force('y', d3.forceY()
        .y(function (d,i) {                
         if (d.Grupo == "Pelicula") {
-            //console.log("d.Grupo :", d.Grupo);
-            //console.log("widthScale", widthScale(d.Fecha));
             return heightScale(i);
         } else {            
             return (height);
@@ -55,7 +58,6 @@ var simulation = d3.forceSimulation()
     }).strength(function (d) {
                 
         if (d.Grupo == "Pelicula") {
-            //console.log("getXForce :", getXForce(d));
             return 2;
         } else {            
             return 0;
@@ -64,40 +66,44 @@ var simulation = d3.forceSimulation()
 
 d3.json("resources/data/data.json", function(error, graph) {
   if (error) throw error;
-
-  //console.log("Max:",d3.max(graph.nodes, function(d) { return d.Fecha; }));
+  
   //console.log("Min:",d3.min(graph.nodes, function(d) { return d.Fecha; }));
-
-  widthScale.domain([2000,2017]).nice();    
-  heightScale.domain([0,30]).nice();
+  //console.log("Max:",d3.max(graph.nodes, function(d) { return d.Fecha; }));
+  
   //heightScale.domain(graph.nodes.map(function(d) { return d.Nombre; }));
-    
+  //widthScale.domain([
+  //        d3.min(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }}),
+  //        d3.max(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }})
+  //    ]).nice();
+      
+  widthScale.domain([2000,2017]).nice();
+  heightScale.domain([0,30]).nice();
+
   var link = g.append("g")
-      .attr("class", "links")
+        .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("stroke-width", 1)
-      .attr("stroke","#999")
-      .attr("stroke-opacity",0.6)  
-    ;
-
+        .attr("stroke-width", default_stroke_width)
+        .attr("stroke",default_stroke_color)
+        .attr("stroke-opacity",default_stroke_opacity);
+    
   var node = g.append("g")
-      .attr("class", "nodes")
+        .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")      
-      .attr("r", function (d) {
-                
-        if (d.Grupo == "Pelicula") {
-            return r * 1.5;
-        }else if (d.Grupo == "Director") {
-            return r * 1.3;
-        } else {            
-            return r;
-        }
-    })            
-      .attr("stroke","#fff")        
+        .attr("r", function (d) {                
+            if (d.Grupo == "Pelicula") {
+                return r * 1.5;
+            }else if (d.Grupo == "Director") {
+                return r * 1.3;
+            } else {            
+                return r;
+            }
+        })
+      .attr("stroke","white")  
+      .attr("stroke-width",0.5)
       .attr("fill", function(d) { return color(d.Grupo); })
       .call(d3.drag()
         .on("start", dragstarted)
@@ -110,31 +116,29 @@ d3.json("resources/data/data.json", function(error, graph) {
             return d.Nombre + " (" + d.Fecha + ")";
         } else {            
             return d.Nombre ;
-        }
-    
+        }    
     });
     
-var text = g.selectAll(".text")
+  var text = g.selectAll(".text")
     .data(graph.nodes)
     .enter().append("text")
-    .attr("dy", ".35em")
-    //.attr("font-weight","bold")
-    .style("font-size", 15 + "px")
-    .text(function(d) { 
-    
+        .attr("dy", ".35em")    
+        .style("font-size", default_text_size)
+        .text(function(d) { 
+
         if (d.Grupo == "Pelicula") {
             return d.Nombre;
         } else {            
             return "";
-        }        
-    });
+            }
+        });
 
   simulation
-      .nodes(graph.nodes)
-      .on("tick", ticked);
+    .nodes(graph.nodes)
+    .on("tick", ticked);
 
   simulation.force("link")
-      .links(graph.links);
+    .links(graph.links);
 
   function ticked() {
     link
@@ -148,46 +152,156 @@ var text = g.selectAll(".text")
         .attr("cy", function(d) { return d.y; });
       
     text
-        .attr("transform", function(d) { return "translate(" + (d.x + 7) + "," + d.y + ")"; });
+        .attr("transform", function(d) { return "translate(" + (d.x + 10) + "," + d.y + ")"; });
   }
 
-//Creación del eje X
 g.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + (height*0.87) + ")")  
-    .style("font-size", 15 + "px")
+    .style("font-size", default_text_size)
     .call(d3.axisBottom(widthScale).ticks(null, "0"))
 .append("text")
     .attr("class", "axis_label")
     .attr("transform", "translate(" + (0) + "," + 45 + ")")
     .text("Año de Lanzamiento")        
     .attr("text-anchor","start");
+   
+//::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::
+    
+var linkedByIndex = {};
+    graph.links.forEach(function(d) {
+	linkedByIndex[d.source.Nombre + "," + d.target.Nombre] = true;
+    });
+
+    function isConnected(a, b) {
+        return linkedByIndex[a.Nombre + "," + b.Nombre] || linkedByIndex[b.Nombre + "," + a.Nombre] || a.Nombre == b.Nombre;   
+    }   
+
+    node
+        .on("mouseover", function(d) { set_highlight(d); })
+        .on("mouseout", function() { exit_highlight(); });
+
+function set_highlight(d)
+{
+    svg.style("cursor","pointer");
+    
+    text
+        .style("font-weight", function(o) {
+        return isConnected(d, o) ? "bold" : "normal";})
+
+    link
+        .attr("stroke-width", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_stroke_width : default_stroke_width;})
+
+        .style("stroke", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_color : default_stroke_color;})
+
+        .attr("stroke-opacity", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_stroke_opacity : default_stroke_opacity;});             
+}
+
+function set_highlight2(d)
+{    
+    svg.style("cursor","pointer");
+    
+    node
+        .attr("fill-opacity", function(o) {          
+        return isConnected(d, o) ? 1 : highlight_trans;})
+    
+        .attr("r", function (o) {                
+        return isConnected(d, o) ? r * 1.7 : r * 1.3;})
         
-});
+    text
+        .style("font-weight", function(o) {        
+        return isConnected(d, o) ? "bold" : "normal";})
+        
+        .style("font-size", function(o) {        
+        return isConnected(d, o) ? highlight_text_size : default_text_size;})
+    
+        .text(function(o) {
+            if (o.Grupo == "Pelicula") {
+                return o.Nombre;
+            }else if (o.Nombre == d.Nombre){
+                return o.Nombre;
+            } else {            
+                return "";
+            }});    
+    
+    link
+        .attr("stroke-width", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_stroke_width : default_stroke_width;})
+
+        .style("stroke", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_color : default_stroke_color;})
+
+        .attr("stroke-opacity", function(o) {
+        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? highlight_stroke_opacity : highlight_trans;}); 
+}
+    
+function exit_highlight()
+{
+    svg.style("cursor","default");
+
+    node
+        .attr("fill-opacity", 1)
+        .attr("r", function (d) {                
+            if (d.Grupo == "Pelicula") {
+                return r * 1.5;
+            }else if (d.Grupo == "Director") {
+                return r * 1.3;
+            } else {            
+                return r;
+            }
+        })
+    
+    text
+        .style("font-weight", "normal")
+        .style("font-size", default_text_size)
+        .text(function(d) {
+            if (d.Grupo == "Pelicula") {
+                return d.Nombre;
+            } else {            
+                return "";
+            }});    
+    link                
+        .attr("stroke-width", default_stroke_width)
+        .style("stroke", default_stroke_color)
+        .attr("stroke-opacity",default_stroke_opacity);   
+}
+    
+//::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::
 
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
-  d.fy = d.y;
-  //console.log(d3.event.subject);
+  d.fy = d.y;  
+    
+  set_highlight2(d);
 }
 
 function dragged(d) {
   d.fx = d3.event.x;
   d.fy = d3.event.y;
+    
+  set_highlight2(d);
 }
 
 function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
+  if (!d3.event.active) simulation.alphaTarget(0);    
   d.fx = null;
   d.fy = null;
-}
 
-/*
-function getXForce(d){
-    var temp = temp + function(o) {
-        return o.source.Nombre == d.Nombre || o.target.Nombre == d.Nombre ? 1 : o.x;
-    }
-    return temp;
+  exit_highlight();
+  set_highlight(d);
 }
-*/
+});
+    
+d3.select("#button_1").on("click", function() {console.log("button_1");});
+d3.select("#button_2").on("click", function() {console.log("button_2");});
+d3.select("#button_3").on("click", function() {console.log("button_3");});
+d3.select("#button_4").on("click", function() {console.log("button_4");});
+d3.select("#button_5").on("click", function() {console.log("button_5");});
