@@ -340,6 +340,5 @@ d3.select("#button_3").on("click", function() {button_click("03");});
 d3.select("#button_4").on("click", function() {button_click("04");});
 d3.select("#button_5").on("click", function() {button_click("05");});
 
-
 }
 update("resources/data/data_01.json")
