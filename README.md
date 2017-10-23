@@ -9,6 +9,4 @@ Usando la base de datos de películas disponible en [Kagglea](https://www.kaggle
 
 ![caucho](resources/img/Peliculas2.gif "gif de la aplicación real")
 
-Se realizó un análisis mediante visualizaciones de las bases de datos Delito Hurto Residencias (2010 - 2017) disponibles en el portal de [Datos Abiertos de Colombia](https://www.datos.gov.co/), información proporcionada por el Grupo Información de Criminalidad (GICRI) - DIJIN de la Policía Nacional, con el propósito presentar gráficamente la agregación de eventos de hurtos a residencias a nivel nacional y así buscar entender como ha cambiado la ocurrencia de estos en diferentes años.
-
 Visita el Demo [aquí](https://jairoruizsaenz.github.io/Relaciones-Peliculas/).
