@@ -104,25 +104,25 @@ header {
     /* background-color: rgba(31, 111, 65, 0.42); 
     border: 1px solid red;
     */
-    border: 1px solid green;
+    /*border: 1px solid green;*/
 }
 
 #wrapper {
     width: 1320px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     overflow: hidden; /* will contain if #first is longer than #second */
 }
 #first {
     width: 900px;
     float:left; /* add this */
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 #second {
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     overflow: hidden; /* if you don't want #second to wrap below #first */
 }
 #third {
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
     overflow: hidden; /* if you don't want #second to wrap below #first */
 }
 
@@ -136,7 +136,7 @@ p{background-color: aqua}
 
 #button_wrapper {
     width: auto;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     overflow: hidden; /* will contain if #first is longer than #second */
     margin-bottom: 0px;
 }

@@ -1,4 +1,5 @@
 /* global d3 */
+document.body.style.zoom = 0.75
 var highlight_stroke_width = 3,
     highlight_color = "#fd0000",
     highlight_trans = 0.1,
@@ -215,7 +216,7 @@ var simulation = d3.forceSimulation()
             return isConnected(d, o) ? 1 : highlight_trans;})
 
             .attr("r", function (o) {                
-            return isConnected(d, o) ? r * 1.7 : r * 1.3;})
+            return isConnected(d, o) ? r * 1.5 : r * 1.3;})
 
         text
             .style("opacity", function(o) {        
