@@ -1,5 +1,5 @@
 /* global d3 */
-document.body.style.zoom = 0.75
+document.body.style.zoom = 0.80
 var highlight_stroke_width = 3,
     highlight_color = "#fd0000",
     highlight_trans = 0.1,
@@ -14,9 +14,10 @@ var highlight_stroke_width = 3,
     svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = {top: 50, right: 20, bottom: 30, left: 20};
+    margin = {top: 50, right: 20, bottom: 80, left: 20};
 
-function update(path,limit){
+    var breaks = ["Pelicula","Director","Actor"];
+function update(path){
     svg
         .append("svg")
         .attr("width", width)
@@ -25,6 +26,7 @@ function update(path,limit){
 var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"),        
     r = 4,
     color = d3.scaleOrdinal(d3.schemeCategory20),
+    color2 = d3.scaleOrdinal(d3.schemeCategory20),
     widthScale = d3.scaleLinear().range([0,width- margin.left -margin.right]),    
     heightScale = d3.scaleLinear().range([0,height- margin.top -margin.bottom]);
 
@@ -68,19 +70,19 @@ var simulation = d3.forceSimulation()
     d3.json(path, function(error, graph) {
       if (error) throw error;
 
-      //console.log("Min:",d3.min(graph.nodes, function(d) { return d.Fecha; }));
-      //console.log("Max:",d3.max(graph.nodes, function(d) { return d.Fecha; }));
+      var num_movies = 0;
+      var minYear = Number(d3.min(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { 
+          num_movies = num_movies + 1;
+          return d.Fecha;          
+      }}));
+      
+      var maxYear = Number(d3.max(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }}))+1;
 
-      //heightScale.domain(graph.nodes.map(function(d) { return d.Nombre; }));
-      //widthScale.domain([
-      //        d3.min(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }}),
-      //        d3.max(graph.nodes, function(d) { if (d.Grupo == "Pelicula") { return d.Fecha; }})
-      //    ]).nice();
+      num_movies = num_movies + 1;
+      widthScale.domain([minYear,maxYear]).nice();
+      heightScale.domain([0,num_movies]).nice();
 
-      widthScale.domain([2000,2017]).nice();
-      heightScale.domain([0,limit]).nice();
-
-      var link = g.append("g") //jairo
+      var link = g.append("g")
             .attr("class", "links")
         .selectAll("line")
         .data(graph.links)
@@ -89,7 +91,7 @@ var simulation = d3.forceSimulation()
             .attr("stroke",default_stroke_color)
             .attr("stroke-opacity",default_stroke_opacity);
 
-      var node = g.append("g") //jairo
+      var node = g.append("g")
             .attr("class", "nodes")
         .selectAll("circle")
         .data(graph.nodes);
@@ -97,7 +99,7 @@ var simulation = d3.forceSimulation()
       var nodeEnter = node.enter()
             .append("circle")      
             .attr("r", function (d) {                
-                if (d.Grupo == "Pelicula") {
+                if (d.Grupo == "Pelicula") {                    
                     return r * 1.5;
                 }else if (d.Grupo == "Director") {
                     return r * 1.3;
@@ -113,18 +115,19 @@ var simulation = d3.forceSimulation()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended))
-            .append("title")        
-            .text(function (d) {         
-            if (d.Grupo == "Pelicula") {            
-                return d.Nombre + " (" + d.Fecha + ")";
+            .append("title")
+            .html(function (d) {         
+            if (d.Grupo == "Pelicula") {    
+                    return "Película          : " + d.Nombre + "<br>" + 
+                    "Lanzamiento : " + d.Fecha + "<br>" + 
+                    "Score IMDb   : " + d.Score
+                        
+                        ;
             } else {            
                 return d.Nombre ;
-            }    
-        });
-
-        node.exit().remove();
-        
-      var text = g.selectAll(".text") //jairo
+            }});
+                  
+      var text = g.selectAll(".text") 
         .data(graph.nodes)        
         .enter().append("text")
             .attr("dy", ".35em")    
@@ -145,6 +148,29 @@ var simulation = d3.forceSimulation()
       simulation.force("link")
         .links(graph.links);
 
+var key = g.append("g")
+    .attr("transform", "translate(" + (width*0.35) + "," + (height*0.90) + ")");
+
+key.selectAll("rect")
+    .data(breaks)
+    .enter()
+    .append("rect")
+    .attr("width","15px")
+    .attr("height","15px")
+    .attr("x",function(d,i){return i*150;})
+    .attr("fill",function(d){return color2(d);});
+        
+    key.selectAll("text")
+        .data(breaks)
+        .enter()
+        .append("text")
+        .attr("x",function(d,i){return 15+5+(i*150);})
+        .attr("y","1em")
+        .attr("font-size", 15)
+        .text(function(d,i){
+          return breaks[i];
+        });
+        
       function ticked() {
         link
             .attr("x1", function(d) { return d.source.x; })
@@ -162,18 +188,15 @@ var simulation = d3.forceSimulation()
 
     g.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(0," + (height*0.87) + ")")  
+        .attr("transform", "translate(0," + (height*0.85) + ")")  
         .style("font-size", default_text_size)
         .call(d3.axisBottom(widthScale).ticks(null, "0"))
     .append("text")
         .attr("class", "axis_label")
         .attr("transform", "translate(" + (0) + "," + 45 + ")")
-        .text("Año de Lanzamiento")        
+        .attr("font-weight", "bold")
+        .text("Año de Lanzamiento")          
         .attr("text-anchor","start");
-
-    //::::::::::::::::::::::::::::::::
-    //::::::::::::::::::::::::::::::::
-    //::::::::::::::::::::::::::::::::
 
     var linkedByIndex = {};
         graph.links.forEach(function(d) {
@@ -280,10 +303,6 @@ var simulation = d3.forceSimulation()
             .attr("stroke-opacity",default_stroke_opacity);   
     }
 
-    //::::::::::::::::::::::::::::::::
-    //::::::::::::::::::::::::::::::::
-    //::::::::::::::::::::::::::::::::
-
     function dragstarted(d) {
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
@@ -309,21 +328,18 @@ var simulation = d3.forceSimulation()
     }
     });
 
-d3.select("#button_1").on("click", function() {
-    console.log("button_1");
-    g.remove();
-    update("resources/data/data.json",30);
-});
+    function button_click(indice) {
+        console.log("button_",indice);
+        g.remove();
+        update("resources/data/data_" + indice +".json");
+    } 
     
-d3.select("#button_2").on("click", function() {
-    console.log("button_2");
-    g.remove();
-    update("resources/data/data3.json",7);
-});
+d3.select("#button_1").on("click", function() {button_click("01");});
+d3.select("#button_2").on("click", function() {button_click("02");});
+d3.select("#button_3").on("click", function() {button_click("03");});
+d3.select("#button_4").on("click", function() {button_click("04");});
+d3.select("#button_5").on("click", function() {button_click("05");});
+
 
 }
-update("resources/data/data.json",30)
-
-d3.select("#button_3").on("click", function() {console.log("button_3");});
-d3.select("#button_4").on("click", function() {console.log("button_4");});
-d3.select("#button_5").on("click", function() {console.log("button_5");});
+update("resources/data/data_01.json")

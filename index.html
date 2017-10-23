@@ -13,53 +13,51 @@
         <div class="container">
             <header>
             </header>
-
-            <h1>Películas, directores, actores y sus conexiones</h1>
-                        
-            <div id="wrapper">
-                <div id="first">
-                    <canvas id="network2" width="896" height="450" class="grafica"></canvas>            
-                </div>
-                <div id="second">
-                    <p class="main-text">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                    </p>
-                </div>
-                <div id="third">
-                    <p class="main-text">
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software. 
-                    </p>
-                </div>
-            </div>                                                            
+            
+            <h1>¿Sabes en que películas aparecen tus actores favoritos?</h1> 
+            <h3>Películas, directores, actores y sus conexiones</h3>
                     
             <p class="main-text">                
-                Según lo anterior, se realizó un análisis mediante visualizaciones de la base de datos
-                <a href="https://www.datos.gov.co/Seguridad-y-Defensa/Incautaci-n-estupefacientes-2016/hede-9b26" target="_blank">Incautación estupefacientes 2016</a> disponible en el portal de <a href="https://www.datos.gov.co/" target="_blank">Datos Abiertos de Colombia</a>
-                 , proporcionada por el Grupo Información de Criminalidad (GICRI) - DIJIN de la Policía Nacional, con el propósito de entender mejor el estado actual de cómo se distribuyen los estupefacientes a nivel nacional.
-            </p>                    
+                Usando la base de datos de películas disponible en 
+                <a href="https://www.kaggle.com/tmdb/tmdb-movie-metadata" target="_blank">Kaggle</a> junto a información adicional del portal <a href="http://www.imdb.com/" target="_blank">IMDb</a>,
+                 se crea un diagrama de redes, en el que podrás encontrar relaciones entre películas, su director y los actores principales que aparecen en ella.            
+                <br>
             
+                <li>¿Sábes cuando se lanzaron tus películas favoritas y sus secuelas?</li>
+                <li>¿Conoces los nombres de los actores que conectan diversas películas? </li>
+                <li>Ser actor y director en la misma película, ¿será posible?</li>
+                
+                Podrás aclarar estas y otras pregúntas interactuando con el diagrama de redes.
+            </p>
+            <hr noshade size="1">
             <div id="button_wrapper">
-                <p> Seleccione el filtro deseado: </p>
-                <button type="button" class="btn" id="button_1">Click Me 1!</button>                
-                <button type="button" class="btn" id="button_2">Click Me 2!</button>
+                <h4> Seleccione el filtro deseado: </h4>
+                <button type="button" class="btn" id="button_1">Universo Marvel</button>                
+                <button type="button" class="btn" id="button_2">Star Wars</button>
+                <!--
                 <button type="button" class="btn" id="button_3">Click Me 3!</button>
                 <button type="button" class="btn" id="button_4">Click Me 4!</button>
-                <button type="button" class="btn" id="button_5">Click Me 5!</button>
+                <button type="button" class="btn" id="button_5">Click Me 5!</button>                
+                -->
             </div>
                         
-            <svg id="svg" width="1320" height="900" class="grafica"></svg>
+            <svg id="svg" width="1320" height="850" class="grafica"></svg>
             <script src="resources/js/Force_Directed_Graph_SVG.js"></script> 
             
+            <p class="main-text">
             
-            <!--
-            <script src="resources/js/Force_Directed_Graph_SVG_ScatterPlot.js"></script> 
-            -->
+            <h4> Datos Interesantes: </h4>
+            <li>Stan Lee, escritor y editor de cómics, creador de muchos de los superheroes del universo marvel, aparece en varias de las películas recientes de marvel. En 14 para ser exactos.</li>
+            <li>Jon Favreau, actúa en Iron Man, Iron Man 2, Iron Man 3 y Spider Man: Homecoming. Pero también fue el director de Iron Man y Iron Man 2.</li>
+            <li>Con el transcurrir de los años, los ratings de las películas en el universo marvel han ido en aumento, al igual que el número de lanzamientos que realizan cada año.</li>
             
+            
+            <hr noshade size="1">
             <footer>
-                <p><br><br><strong>Estupefacientes, más que cifras</strong> es mantenido por 
+                <p><strong>Películas, directores, actores y sus conexiones</strong> es mantenido por 
                     <a href="https://github.com/jairoruizsaenz" target="_blank">Jairo Ruiz Saenz</a>  -  
                     <a href="https://github.com/jairoruizsaenz/Relaciones-Peliculas" target="_blank">Ver Repositorio</a> -
-                       Fecha de actualización: 18/09/2017 </p>
+                       Fecha de actualización: 23/10/2017</p>
                 <p>Publicado con <a href="https://pages.github.com" target="_blank">GitHub Pages</a></p>                        
             </footer>
         </div>
