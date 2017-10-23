@@ -7,6 +7,8 @@ Usando la base de datos de películas disponible en [Kaggle](https://www.kaggle.
 - ¿Conoces los nombres de los actores que conectan diversas películas?
 - Ser actor y director en la misma película, ¿será posible?
 
+Podrás aclarar estas y otras pregúntas interactuando con el diagrama de redes.
+
 ![caucho](resources/img/Peliculas2.gif "gif de la aplicación real")
 
 Visita el Demo [aquí](https://jairoruizsaenz.github.io/Relaciones-Peliculas/).
