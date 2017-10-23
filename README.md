@@ -9,6 +9,6 @@ Usando la base de datos de películas disponible en [Kaggle](https://www.kaggle.
 
 Podrás aclarar estas y otras pregúntas interactuando con el diagrama de redes.
 
-![caucho](resources/img/Peliculas2.gif "gif de la aplicación real")
+![caucho](resources/img/Peliculas2.gif "gif de la aplicación real")(http://google.com.au/)
 
 Visita el Demo [aquí](https://jairoruizsaenz.github.io/Relaciones-Peliculas/).
