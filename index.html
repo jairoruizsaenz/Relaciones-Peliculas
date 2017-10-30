@@ -29,18 +29,29 @@
                 
                 Podrás aclarar estas y otras pregúntas interactuando con el diagrama de redes.
             </p>
+            
+            <!-- Para que cada usuario ubique fácilmente al actor o actores de su preferencia,
+                te sugiero incluir un textbox en el cual el usuario ingrese el nombre o apellido del actor
+                y automáticamente se resalte el nodo correspondiente en la visualización.
+                En caso de no encontrar coincidencia mostrar un mensaje para informar al usuario. -->
+            
+            <!-- Aquí un ejemplo: http://plnkr.co/edit/MOczs02DNeUJGzXAPdMd?p=preview -->
+            
             <hr noshade size="1">
             <div id="button_wrapper">
                 <h4> Seleccione el filtro deseado: </h4>
                 <button type="button" class="btn" id="button_1">Universo Marvel</button>                
                 <button type="button" class="btn" id="button_2">Star Wars</button>
-                <button type="button" class="btn" id="button_3">DC Comics</button>
-                <!--
-                <button type="button" class="btn" id="button_4">Click Me 4!</button>
-                <button type="button" class="btn" id="button_5">Click Me 5!</button>                
-                -->
+                <button type="button" class="btn" id="button_3">DC Comics</button>                
             </div>
-                        
+            <!-- La visualización en si es muy buena y adecuada para las tareas que plantea,
+                    como usuario me gustaria ver los nombre de los actores y el director cuando 
+                    doy clic en el nodo de las películas.-->
+            <!-- Como hay películas que tienen gran cantidad de actores, te sugiero hacer un zoom
+                 y modificar las fuerzas entre los nodos para expandir aumentar las distancias y de esta 
+                forma lograr una buena visualización del insight. -->
+            <!-- Se puede basar en este código: http://jsfiddle.net/vY8JT/ -->
+            
             <svg id="svg" width="1320" height="850" class="grafica"></svg>
             <script src="resources/js/Force_Directed_Graph_SVG.js"></script> 
             
